@@ -3,13 +3,16 @@ output_test
 output*
 instant_test_output
 inference_test_output
+AIRCRAFT PRED/
 
 
 *.json
 *.diff
+.DS_Store
 
 # compilation and distribution
 __pycache__
+.pycache/
 _ext
 *.pyc
 *.pyd
@@ -43,5 +46,13 @@ _darcs
 /detectron2/model_zoo/configs
 /datasets/*
 !/datasets/*.*
+!/datasets/coco/
+!/datasets/coco/annotations/
+!/datasets/coco/annotations/instances_train2017.json
+!/datasets/coco/annotations/instances_val2017.json
+!/datasets/aircraft_voc/
+!/datasets/aircraft_voc/Annotations/
+!/datasets/aircraft_voc/ImageSets/
+!/datasets/aircraft_voc/ImageSets/Main/
+!/datasets/aircraft_voc/JPEGImages/
 /projects/*/datasets
-

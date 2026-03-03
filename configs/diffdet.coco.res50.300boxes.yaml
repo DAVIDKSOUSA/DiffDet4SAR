@@ -1,7 +1,7 @@
 _BASE_: "Base-DiffusionDet.yaml"
 MODEL:
 
- WEIGHTS: "/root/autodl-tmp/project/DiffusionDet-main/output_bbox500_CPDCfusionp5_scale1.0/model_final.pth"
+ WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
   RESNETS:
     DEPTH: 50
     STRIDE_IN_1X1: False

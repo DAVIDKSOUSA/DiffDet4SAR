@@ -313,7 +313,6 @@ if __name__ == "__main__":
     torch.cuda.empty_cache()
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
-    args.eval_only=True
     launch(
         main,
         args.num_gpus,

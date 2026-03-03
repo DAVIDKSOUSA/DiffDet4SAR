@@ -1,0 +1,12 @@
+tabulate
+yacs
+omegaconf
+pycocotools
+tqdm
+matplotlib
+opencv-python
+Pillow
+timm
+scipy
+pyyaml
+iopath
