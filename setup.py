@@ -8,8 +8,7 @@ from torch.utils.cpp_extension import BuildExtension, CppExtension, CUDAExtensio
 
 
 def get_extensions():
-    this_dir = path.dirname(path.abspath(__file__))
-    extensions_dir = path.join(this_dir, "detectron2", "layers", "csrc")
+    extensions_dir = path.join("detectron2", "layers", "csrc")
 
     main_source = path.join(extensions_dir, "vision.cpp")
     sources = glob(path.join(extensions_dir, "**", "*.cpp"), recursive=True)

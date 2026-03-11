@@ -11,7 +11,10 @@ git add train_net.py \
   setup.py \
   requirements-server.txt \
   SERVER_SETUP.md \
+  DEPLOY_OTHER_MACHINE.md \
   scripts/create_runtime_dirs.sh \
+  scripts/setup_runtime_env.sh \
+  scripts/build_inference_bundle.sh \
   scripts/import_local_training_dataset.sh \
   scripts/prepare_aircraft_dataset.sh \
   scripts/train_aircraft.sh \
@@ -34,20 +37,18 @@ cd DiffDet4SAR
 
 ## 3. Create the Python environment
 
-Install PyTorch with CUDA first, using the command that matches the server CUDA version.
-
-Then run:
+Run:
 
 ```bash
-python3 -m venv .venv
+bash scripts/setup_runtime_env.sh
 source .venv/bin/activate
-python -m pip install --upgrade pip wheel setuptools
-python -m pip install -r requirements-server.txt
-python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-python -m pip install -e .
 ```
 
-`python -m pip install -e .` builds the local `detectron2._C` extension from this repository.
+If your CUDA version is different, set the wheel index before setup:
+
+```bash
+TORCH_INDEX_URL=https://download.pytorch.org/whl/cu124 bash scripts/setup_runtime_env.sh
+```
 
 ## 4. Runtime folders
 
@@ -127,3 +128,11 @@ Then regenerate the COCO files inside the repository:
 ```bash
 bash scripts/prepare_aircraft_dataset.sh
 ```
+
+## 9. Build inference bundle for another machine
+
+```bash
+bash scripts/build_inference_bundle.sh
+```
+
+This creates `deploy/*.tar.gz` with code + config + `model_final.pth`.

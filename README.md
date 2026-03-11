@@ -19,6 +19,8 @@ SAR-AIRcraft1.0 (doi: 10.12000/JR23043)
 ## 📽️ Getting Started
 
 The installation instruction and usage are in [Getting Started with DiffusionDet](GETTING_STARTED.md).
+For cross-machine deployment/inference, see [Deploy para Outra Maquina](DEPLOY_OTHER_MACHINE.md).
+For very large TIFF scenes, you can use SAHI sliced inference with `infer_tif_dir_sahi.py`.
 
 ## 🚉 Train/Evalution:
 1. modifying the weight in DiffusionDet-main/configs/Base-DiffusionDet.yaml (use pre-train res50)

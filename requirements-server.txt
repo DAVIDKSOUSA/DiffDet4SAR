@@ -10,3 +10,6 @@ timm
 scipy
 pyyaml
 iopath
+openpyxl
+tifffile
+sahi

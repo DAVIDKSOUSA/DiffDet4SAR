@@ -36,6 +36,7 @@ wheels/
 *.swo
 *.swp
 *~
+.venv/
 
 # editor settings
 .idea
@@ -56,3 +57,6 @@ _darcs
 !/datasets/aircraft_voc/ImageSets/Main/
 !/datasets/aircraft_voc/JPEGImages/
 /projects/*/datasets
+
+# deployment bundles
+/deploy/

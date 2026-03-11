@@ -4,6 +4,11 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VOC_ROOT="${1:-$REPO_ROOT/datasets/aircraft_voc}"
 COCO_DIR="$REPO_ROOT/datasets/coco"
+PYTHON_BIN="$REPO_ROOT/.venv/bin/python"
+
+if [ ! -x "$PYTHON_BIN" ]; then
+  PYTHON_BIN="python3"
+fi
 
 if [ ! -d "$VOC_ROOT" ]; then
   echo "Dataset root not found: $VOC_ROOT"
@@ -16,12 +21,12 @@ rm -f "$COCO_DIR/train2017" "$COCO_DIR/val2017"
 ln -s "../aircraft_voc/JPEGImages" "$COCO_DIR/train2017"
 ln -s "../aircraft_voc/JPEGImages" "$COCO_DIR/val2017"
 
-python3 "$REPO_ROOT/voc_to_coco_single_class.py" \
+"$PYTHON_BIN" "$REPO_ROOT/voc_to_coco_single_class.py" \
   --dataset-root "$VOC_ROOT" \
   --split train \
   --output-json "$REPO_ROOT/datasets/coco/annotations/instances_train2017.json"
 
-python3 "$REPO_ROOT/voc_to_coco_single_class.py" \
+"$PYTHON_BIN" "$REPO_ROOT/voc_to_coco_single_class.py" \
   --dataset-root "$VOC_ROOT" \
   --split val \
   --output-json "$REPO_ROOT/datasets/coco/annotations/instances_val2017.json"

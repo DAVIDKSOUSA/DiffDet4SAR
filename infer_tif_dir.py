@@ -18,15 +18,7 @@ from diffusiondet import add_diffusiondet_config
 from diffusiondet.util.model_ema import add_model_ema_configs
 
 
-MODEL_CLASS_NAMES = [
-    "A220",
-    "A320/321",
-    "A330",
-    "ARJ21",
-    "Boeing737",
-    "Boeing787",
-    "other",
-]
+MODEL_CLASS_NAMES = ["aircraft"]
 
 OUTPUT_CLASS_NAME = "aircraft"
 
@@ -37,7 +29,7 @@ def build_parser():
     )
     parser.add_argument(
         "--config-file",
-        default="configs/diffdet.coco.res50.300boxes.yaml",
+        default="configs/diffdet.aircraft.single_class.yaml",
         help="Path to the model config file.",
     )
     parser.add_argument(
@@ -168,10 +160,6 @@ def read_tif_as_bgr(path, lower_percentile, upper_percentile):
         if image.shape[0] in (1, 3) and image.shape[0] < image.shape[-1]:
             image = np.transpose(image, (1, 2, 0))
 
-        if image.shape[2] == 1:
-            band = normalize_uint16_to_uint8(image[:, :, 0], lower_percentile, upper_percentile)
-            return np.repeat(band[:, :, None], 3, axis=2)
-
         if image.dtype != np.uint8:
             channels = []
             for channel_idx in range(image.shape[2]):
@@ -179,6 +167,13 @@ def read_tif_as_bgr(path, lower_percentile, upper_percentile):
                     normalize_uint16_to_uint8(image[:, :, channel_idx], lower_percentile, upper_percentile)
                 )
             image = np.stack(channels, axis=2)
+
+        num_channels = image.shape[2]
+        if num_channels == 1:
+            return np.repeat(image[:, :, :1], 3, axis=2)
+        if num_channels == 2:
+            third = ((image[:, :, 0].astype(np.uint16) + image[:, :, 1].astype(np.uint16)) // 2).astype(np.uint8)
+            return np.dstack([image, third])
         return image[:, :, :3]
 
     raise ValueError(f"Unsupported TIFF shape for {path}: {image.shape}")

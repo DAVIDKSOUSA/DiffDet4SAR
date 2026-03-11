@@ -25,7 +25,8 @@ import detectron2.utils.comm as comm
 from detectron2.utils.logger import setup_logger
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
-from detectron2.data import build_detection_train_loader
+from detectron2.data import DatasetCatalog, build_detection_train_loader
+from detectron2.data.datasets import register_coco_instances
 from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, launch, create_ddp_model, \
     AMPTrainer, SimpleTrainer, hooks
 from detectron2.evaluation import COCOEvaluator, LVISEvaluator, verify_results
@@ -35,6 +36,25 @@ from detectron2.modeling import build_model
 from diffusiondet import DiffusionDetDatasetMapper, add_diffusiondet_config, DiffusionDetWithTTA
 from diffusiondet.util.model_ema import add_model_ema_configs, may_build_model_ema, may_get_ema_checkpointer, EMAHook, \
     apply_model_ema_and_restore, EMADetectionCheckpointer
+
+
+def register_aircraft_single_class_datasets():
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    datasets = {
+        "aircraft_single_class_train": (
+            os.path.join(repo_root, "datasets", "coco", "annotations", "instances_train2017.json"),
+            os.path.join(repo_root, "datasets", "coco", "train2017"),
+        ),
+        "aircraft_single_class_val": (
+            os.path.join(repo_root, "datasets", "coco", "annotations", "instances_val2017.json"),
+            os.path.join(repo_root, "datasets", "coco", "val2017"),
+        ),
+    }
+    registered = set(DatasetCatalog.list())
+    for name, (json_file, image_root) in datasets.items():
+        if name in registered:
+            continue
+        register_coco_instances(name, {"thing_classes": ["aircraft"]}, json_file, image_root)
 
 
 class Trainer(DefaultTrainer):
@@ -254,6 +274,7 @@ def setup(args):
     """
     Create configs and perform basic setups.
     """
+    register_aircraft_single_class_datasets()
     cfg = get_cfg()
     add_diffusiondet_config(cfg)
     add_model_ema_configs(cfg)
