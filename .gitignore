@@ -3,7 +3,8 @@ output_test
 output*
 instant_test_output
 inference_test_output
-AIRCRAFT PRED/
+AIRCRAFT_PRED/
+meus_tifs/
 
 
 *.json
