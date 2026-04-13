@@ -39,9 +39,12 @@ wheels/
 .vscode
 _darcs
 
+# local environments and artifacts
+.venv/
+deploy/
+
 # project dirs
 /detectron2/model_zoo/configs
 /datasets/*
 !/datasets/*.*
 /projects/*/datasets
-
